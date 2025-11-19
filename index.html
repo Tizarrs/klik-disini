@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pastel-pink': '#ffd1dc',
+                        'pastel-purple': '#e6e6fa',
+                        'pastel-blue': '#aec6cf',
+                        'deep-rose': '#d46a6a',
+                    },
+                    fontFamily: {
+                        'hand': ['Pacifico', 'cursive'],
+                        'body': ['Quicksand', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #fff0f5 0%, #e6e6fa 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            scroll-behavior: smooth; /* Biar scrollnya halus */
+        }
+
+        /* Animasi Floating untuk elemen dekorasi */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        .float-anim { animation: float 4s ease-in-out infinite; }
+
+        /* Animasi Panah Scroll */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
+        }
+        .animate-bounce-slow { animation: bounce-slow 2s infinite; }
+
+        /* Polaroid & Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #fff0f5; }
+        ::-webkit-scrollbar-thumb { background: #ffb7b2; border-radius: 5px; }
+
+        .polaroid {
+            background: white;
+            padding: 10px;
+            padding-bottom: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .polaroid:hover { transform: scale(1.05) rotate(2deg); z-index: 10; }
+
+        .fade-in-up {
+            animation: fadeInUp 1s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .delay-100 { animation-delay: 0.2s; }
+        .delay-200 { animation-delay: 0.4s; }
+        .delay-300 { animation-delay: 0.6s; }
+    </style>
+</head>
+<body class="font-body text-gray-700 antialiased selection:bg-pink-200 selection:text-pink-800">
+
+    <!-- AUDIO -->
+    <audio id="bgMusic" loop>
+        <source src="https://github.com/Tizarrs/Html-buat-ultah-/raw/refs/heads/main/Rich%20Brian,%20Brian%20Imanuel,%20Fariz%20RM,%20Iman%20RN%20-%20Sen.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- MODAL POPUP -->
+    <div id="startModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-500">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border-4 border-pink-200 transform scale-100 transition-transform duration-300">
+            <div class="text-4xl mb-4">🎁</div>
+            <h2 class="text-2xl font-hand text-deep-rose mb-4">Ciee ulang tahun nih ye</h2>
+            <p class="mb-6 text-gray-600">Mau pakai musik ga?</p>
+            
+            <div class="flex justify-center gap-4">
+                <button onclick="startExperience(true)" class="bg-pink-400 hover:bg-pink-500 text-white font-bold py-2 px-6 rounded-full transition transform hover:scale-105 shadow-lg">
+                    Gas! 🎵
+                </button>
+                <button onclick="startExperience(false)" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-2 px-6 rounded-full transition transform hover:scale-105">
+                    Skip 🔇
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent" class="hidden relative">
+        
+        <!-- Dekorasi Background (Fixed agar tetap terlihat saat scroll) -->
+        <div class="fixed top-10 left-10 text-4xl opacity-20 float-anim pointer-events-none z-0">🎈</div>
+        <div class="fixed bottom-20 right-10 text-5xl opacity-20 float-anim pointer-events-none z-0" style="animation-delay: 1s;">🎂</div>
+        <div class="fixed top-1/2 left-5 text-3xl opacity-20 float-anim pointer-events-none z-0" style="animation-delay: 2s;">✨</div>
+
+        <!-- HERO SECTION: FULLSCREEN -->
+        <!-- Flexbox digunakan untuk menengahkan konten secara vertikal dan horizontal -->
+        <div class="min-h-screen flex flex-col justify-center items-center text-center px-4 relative">
+            
+            <div class="fade-in-up z-10">
+                <div class="inline-block p-3 bg-white/50 backdrop-blur-sm rounded-full mb-6 animate-bounce shadow-sm">
+                    🎉
+                </div>
+                <h1 class="text-5xl md:text-7xl font-hand text-deep-rose mb-4 leading-tight drop-shadow-sm">
+                    Selamat Ulang Tahun<br>
+                    <span class="text-pink-500">Mput!</span>
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-500 italic mt-4">Instead of "Selamat ulang tahun" why not say this </p>
+            </div>
+
+            <!-- Panah Scroll Down -->
+            <div class="absolute bottom-10 left-0 right-0 flex flex-col items-center animate-bounce-slow opacity-70 cursor-pointer" onclick="scrollToContent()">
+                <span class="text-sm font-semibold text-pink-400 mb-1">Scroll ke bawah</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- KONTEN SCROLL KE BAWAH -->
+        <div id="content-start" class="container mx-auto px-4 py-12 max-w-2xl relative z-10">
+            
+            <!-- SECTION 1: Pesan Pertama -->
+            <section class="bg-white/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg mb-10 border-b-4 border-pink-200 transform hover:rotate-1 transition duration-300">
+                <h2 class="text-2xl font-hand text-pink-500 mb-4 flex items-center gap-2">
+                    <span>💌</span> Dari saya sebagai seorang TeMAn
+                </h2>
+                <div class="prose text-gray-600 leading-relaxed">
+                    <!-- GANTI TEKS -->
+                    <p>
+                        Selamat ulang tahun. Semoga setiap langkahmu dipenuhi hal-hal baik yang selama ini kau doakan diam-diam. Terima kasih sudah menjadi sosok yang selalu membawa suasana cerah tanpa perlu berusaha keras, hadirmu saja sudah cukup.
+
+
+Saya juga ingin menyampaikan terima kasih atas perhatianmu tahun lalu. Mungkin sederhana, tapi rasanya hangat sekali. Semoga tahun ini aku bisa membalas kebaikan itu, meskipun tak sebanding dengan caramu membuat orang lain merasa dihargai.
+
+
+Tetap jadi dirimu yang sekarang tenang, ceria, dan entah bagaimana selalu berhasil membuat hari orang lain terasa lebih ringan. Semoga kebahagiaan menemukanmu dengan cara-cara yang indah.
+
+Semoga umur baru ini membawa banyak hal yang tak hanya kau inginkan, tapi juga yang secretly kau butuhkan. 
+
+
+                    </p>
+                    <p class="mt-2">
+                        Gehel jadi anak sastra kie
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECTION 2: Pesan Kedua -->
+            <section class="bg-white/80 backdrop-blur-md rounded-2xl p-6 md:p-8 shadow-lg mb-16 border-b-4 border-purple-200 transform hover:-rotate-1 transition duration-300">
+                <h2 class="text-2xl font-hand text-purple-500 mb-4 flex items-center gap-2">
+                    <span>🌟</span> Selamat Ulang Tahun
+                </h2>
+                <div class="prose text-gray-600 leading-relaxed">
+                    <!-- GANTI TEKS -->
+                    <p>
+                        
+
+Sebagai ketua kelas, izinkan saya menyampaikan ucapan selamat serta doa terbaik untukmu. Semoga pada usiamu yang baru ini, segala urusan baik di kelas maupun di luar kelas dilancarkan, dan setiap langkahmu diberkahi ketenangan serta kemudahan.
+
+Terima kasih atas dedikasimu sebagai bendahara kelas. Ketelitianmu, tanggung jawabmu, dan caramu menjaga segala sesuatu tetap teratur sungguh membantu kami semua. Kelas ini berjalan lebih rapi berkat peranmu yang tak pernah setengah-setengah.
+
+Semoga tahun ini membawamu pada hal-hal yang membahagiakan, pada kesempatan-kesempatan baik yang datang tanpa diduga, dan pada pencapaian yang selama ini mungkin hanya kau simpan dalam hati.
+
+Tetaplah menjadi pribadi yang tenang, teratur, dan penuh ketulusan sifat yang, tanpa perlu kau sadari, membuat kelas ini terasa lebih nyaman.
+
+                    </p>
+                    <p class="mt-2 font-bold text-pink-400">
+                        Pokoknya, wish you all the best weh ya 💖
+                    </p>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Galeri Foto -->
+            <section class="mb-20">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-hand text-deep-rose inline-block relative">
+                        Foto km nyasar di galeri aku
+                        <span class="absolute -bottom-2 left-0 w-full h-2 bg-pink-200/50 -z-10 rounded-full"></span>
+                    </h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Foto 1 -->
+                    <div class="polaroid rotate-2">
+                        <div class="aspect-square overflow-hidden rounded-sm bg-gray-100 mb-2">
+                            <img src="https://raw.githubusercontent.com/Tizarrs/Html-buat-ultah-/refs/heads/main/IMG-20230913-WA0011~2.jpg" alt="Foto 1" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <p class="text-center font-hand text-gray-500 mt-2">Kelas 10</p>
+                    </div>
+
+                    <!-- Foto 2 -->
+                    <div class="polaroid -rotate-2">
+                        <div class="aspect-square overflow-hidden rounded-sm bg-gray-100 mb-2">
+                            <img src="https://raw.githubusercontent.com/Tizarrs/Html-buat-ultah-/refs/heads/main/Mput_6285317739981_20250215-201058.jpg" alt="Foto 2" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <p class="text-center font-hand text-gray-500 mt-2">GATAU TIBA-TIBA ADA😭</p>
+                    </div>
+
+                    <!-- Foto 3 (Lebar) -->
+                    <div class="polaroid rotate-1 md:col-span-2 w-full md:w-3/4 mx-auto">
+                        <div class="aspect-video overflow-hidden rounded-sm bg-gray-100 mb-2">
+                            <img src="https://placehold.co/600x400/c7ceea/white?text=Foto+Kita" alt="Foto 3" class="w-full h-full object-cover hover:scale-110 transition duration-500">
+                        </div>
+                        <p class="text-center font-hand text-gray-500 mt-2">nggak ada</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- FOOTER -->
+            <footer class="text-center text-gray-400 text-sm pb-8">
+                <p>Dibuat sama dep tadi malem </p>
+            </footer>
+
+        </div>
+    </div>
+
+    <script>
+        function startExperience(playMusic) {
+            const modal = document.getElementById('startModal');
+            const mainContent = document.getElementById('mainContent');
+            const audio = document.getElementById('bgMusic');
+
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                
+                if (playMusic) {
+                    audio.volume = 0.5;
+                    audio.play().catch(e => console.log("Audio play failed", e));
+                }
+
+                fireConfetti();
+            }, 500);
+        }
+
+        function scrollToContent() {
+            document.getElementById('content-start').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function fireConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
+
+
